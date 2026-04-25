@@ -57,6 +57,7 @@
             label2.Size = new Size(197, 39);
             label2.TabIndex = 6;
             label2.Text = "SignUp Form";
+            label2.Click += label2_Click;
             // 
             // textBox1
             // 
@@ -148,6 +149,7 @@
             button1.TabIndex = 19;
             button1.Text = "SIGN UP";
             button1.UseVisualStyleBackColor = false;
+            button1.Click += button1_Click;
             // 
             // pictureBox5
             // 
@@ -183,7 +185,7 @@
             pictureBox3.TabIndex = 22;
             pictureBox3.TabStop = false;
             // 
-            // Form1
+            // Signup
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -201,7 +203,7 @@
             Controls.Add(label2);
             Controls.Add(pictureBox5);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "Form1";
+            Name = "Signup";
             Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();

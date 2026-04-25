@@ -39,6 +39,7 @@
             textBox1 = new TextBox();
             textBox3 = new TextBox();
             pictureBox3 = new PictureBox();
+            button2 = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
@@ -52,7 +53,7 @@
             label1.Name = "label1";
             label1.Size = new Size(0, 15);
             label1.TabIndex = 0;
-            label1.Click += this.label1_Click;
+            label1.Click += label1_Click;
             // 
             // button1
             // 
@@ -64,7 +65,7 @@
             button1.TabIndex = 1;
             button1.Text = "LOGIN";
             button1.UseVisualStyleBackColor = false;
-            button1.Click += this.button1_Click;
+            button1.Click += button1_Click;
             // 
             // label2
             // 
@@ -87,7 +88,7 @@
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.TabIndex = 6;
             pictureBox1.TabStop = false;
-            pictureBox1.Click += this.pictureBox1_Click;
+            pictureBox1.Click += pictureBox1_Click;
             // 
             // pictureBox2
             // 
@@ -127,7 +128,7 @@
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(216, 30);
             textBox1.TabIndex = 10;
-            textBox1.TextChanged += this.textBox1_TextChanged_1;
+            textBox1.TextChanged += textBox1_TextChanged_1;
             // 
             // textBox3
             // 
@@ -140,7 +141,7 @@
             textBox3.Name = "textBox3";
             textBox3.Size = new Size(216, 30);
             textBox3.TabIndex = 12;
-            textBox3.TextChanged += this.textBox2_TextChanged_1;
+            textBox3.TextChanged += textBox2_TextChanged_1;
             // 
             // pictureBox3
             // 
@@ -153,6 +154,18 @@
             pictureBox3.TabIndex = 13;
             pictureBox3.TabStop = false;
             // 
+            // button2
+            // 
+            button2.BackColor = Color.Pink;
+            button2.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button2.Location = new Point(62, 393);
+            button2.Name = "button2";
+            button2.Size = new Size(196, 38);
+            button2.TabIndex = 14;
+            button2.Text = "Sign Up";
+            button2.UseVisualStyleBackColor = false;
+            button2.Click += button2_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -160,6 +173,7 @@
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = Color.Pink;
             ClientSize = new Size(308, 504);
+            Controls.Add(button2);
             Controls.Add(textBox3);
             Controls.Add(textBox1);
             Controls.Add(panel2);
@@ -176,7 +190,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
             TransparencyKey = Color.Black;
-            Load += this.Form1_Load;
+            Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
@@ -196,5 +210,6 @@
         private TextBox textBox1;
         private TextBox textBox3;
         private PictureBox pictureBox3;
+        private Button button2;
     }
 }

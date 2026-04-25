@@ -1,3 +1,4 @@
+using sign_up;
 using System.Net.Mime;
 using System.Text.Json;
 
@@ -82,12 +83,13 @@ namespace Final_Project
 
                 }
 
-
-
-
-
-
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Signup sign = new Signup();
+            sign.Show();
         }
     }
 }
