@@ -7,8 +7,8 @@ namespace sign_up
 {
     public partial class Signup : Form
     {
-        readonly string supabaseUrl = "https://edfvfzshguwadnuzivgn.supabase.co";
-        readonly string supabaseApi = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVkZnZmenNoZ3V3YWRudXppdmduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2NzE4MjMsImV4cCI6MjA5MjI0NzgyM30.33hlUCaWSGxfSqFdM-3sgBEPWMQhqUSTBZObVfdjZt4";
+        readonly string? supabaseUrl = System.Configuration.ConfigurationManager.AppSettings["SupabaseUrl"];
+        readonly string? supabaseApi = System.Configuration.ConfigurationManager.AppSettings["SupabaseApi"];
         public Signup()
         {
             InitializeComponent();

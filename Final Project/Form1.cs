@@ -10,8 +10,10 @@ namespace Final_Project
 {
     public partial class Form1 : Form
     {
-        readonly string supabaseUrl = "https://edfvfzshguwadnuzivgn.supabase.co";
-        readonly string supabaseApi = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVkZnZmenNoZ3V3YWRudXppdmduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2NzE4MjMsImV4cCI6MjA5MjI0NzgyM30.33hlUCaWSGxfSqFdM-3sgBEPWMQhqUSTBZObVfdjZt4";
+        readonly string? supabaseUrl = System.Configuration.ConfigurationManager.AppSettings["SupabaseUrl"];
+        readonly string? supabaseApi = System.Configuration.ConfigurationManager.AppSettings["SupabaseApi"];
+        readonly string? gmailAddress = System.Configuration.ConfigurationManager.AppSettings["GmailAddress"];
+        readonly string? gmailAppPassword = System.Configuration.ConfigurationManager.AppSettings["GmailAppPassword"];
         public Form1()
         {
             InitializeComponent();
@@ -128,14 +130,14 @@ namespace Final_Project
                 if (!otpResponse.IsSuccessStatusCode) return false;
 
                 var message = new MimeKit.MimeMessage();
-                message.From.Add(new MimeKit.MailboxAddress("AAAAA", "jadericmc06@gmail.com"));
+                message.From.Add(new MimeKit.MailboxAddress("AAAAA", $"{gmailAddress}"));
                 message.To.Add(new MimeKit.MailboxAddress("", toEmail));
                 message.Subject = "Your OTP Code";
                 message.Body = new MimeKit.TextPart("plain") { Text = $"Your verification code is: {otp}" };
 
                 using var smtp = new MailKit.Net.Smtp.SmtpClient();
                 await smtp.ConnectAsync("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
-                await smtp.AuthenticateAsync("jadericmc06@gmail.com", "ltqi tcaj fdgb xpbn");
+                await smtp.AuthenticateAsync($"{gmailAddress}", $"{gmailAppPassword}");
                 await smtp.SendAsync(message);
                 await smtp.DisconnectAsync(true);
 
