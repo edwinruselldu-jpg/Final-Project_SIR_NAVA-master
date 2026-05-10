@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+	<appSettings>
+		<add key="SupabaseUrl" value="YOUR_SUPABASE_URL"/>
+		<add key="SupabaseApi" value="YOUR_SUPABASE_API_KEY"/>
+		<add key="GmailAddress" value="YOUR_GMAIL"/>
+		<add key="GmailAppPassword" value="YOUR_APP_PASSWORD"/>
+	</appSettings>
+</configuration>

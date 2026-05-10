@@ -86,8 +86,6 @@ namespace Final_Project
                     return;
                 }
 
-                MessageBox.Show($"Query: {query}\n\nResponse: {content}\n{textBox1.Text}\n{textBox3.Text}");
-
                 var users = JsonSerializer.Deserialize<List<Dictionary<string, string>>>(content);
 
                 if (users == null || users.Count == 0)
@@ -104,7 +102,6 @@ namespace Final_Project
                 if (sent)
                 {
                     Otpoo otpForm = new Otpoo(otp, userEmail);
-                    this.Hide();
                     otpForm.Show();
                 }
                 else
@@ -153,6 +150,12 @@ namespace Final_Project
         {
             Signup sign = new Signup();
             sign.Show();
+            this.Close();
+        }
+
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

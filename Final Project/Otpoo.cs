@@ -49,18 +49,18 @@ namespace Final_Project
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {supabaseApi}");
                 client.DefaultRequestHeaders.Add("apikey", supabaseApi);
 
-                string query = $"{supabaseUrl}/rest/v1/otp_codes?email=eq.{Uri.EscapeDataString(_userEmail)}&code=eq.{Uri.EscapeDataString(entered)}&select=*&order=created_at.desc&limit=1";
+                string query = $"{supabaseUrl}/rest/v1/otp_codes?email=eq.{Uri.EscapeDataString(_userEmail)}&code=eq.{Uri.EscapeDataString(entered)}&select=*&limit=1";
                 var response = await client.GetAsync(query);
                 string content = await response.Content.ReadAsStringAsync();
 
-                var matches = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(content);
+                var matches = JsonSerializer.Deserialize<List<JsonElement>>(content);
 
                 if (matches != null && matches.Count > 0)
                 {
                     await client.DeleteAsync($"{supabaseUrl}/rest/v1/otp_codes?email=eq.{Uri.EscapeDataString(_userEmail)}");
                     MessageBox.Show("Login successful! Welcome.");
                     Form2 home = new Form2();
-                    this.Hide();
+                    this.Close();
                     home.Show();
                 }
                 else
@@ -71,6 +71,11 @@ namespace Final_Project
         }
 
         private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Otpoo_Load(object sender, EventArgs e)
         {
 
         }

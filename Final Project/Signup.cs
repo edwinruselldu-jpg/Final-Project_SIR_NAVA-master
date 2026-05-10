@@ -63,6 +63,7 @@ namespace sign_up
                         if (response.IsSuccessStatusCode)
                         {
                             MessageBox.Show("Successful Registration");
+                            this.Close();
                         }
                         else
                         {
@@ -76,10 +77,15 @@ namespace sign_up
                     MessageBox.Show("Password and Confirm Password is not the same");
                 }
             }
-            else 
+            else
             {
                 MessageBox.Show("Please Fill up all the Fields available");
             }
+        }
+
+        private void pictureBox5_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
