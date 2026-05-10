@@ -1,6 +1,10 @@
 using sign_up;
 using System.Net.Mime;
 using System.Text.Json;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static Final_Project.AA;
+using MimeKit;
+using MailKit.Net.Smtp;
 
 namespace Final_Project
 {
@@ -55,37 +59,94 @@ namespace Final_Project
 
         private async void button1_Click(object sender, EventArgs e)
         {
+            string username = textBox1.Text.Trim();
+            string password = textBox3.Text.Trim();
+
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            {
+                MessageBox.Show("Please enter both username and password.");
+                return;
+            }
+
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {supabaseApi}");
                 client.DefaultRequestHeaders.Add("apikey", supabaseApi);
-                var response = await client.GetAsync($"{supabaseUrl}/rest/v1/userbase?select=*&User=eq.{textBox1.Text}&Password=eq.{textBox3.Text}");
+
+                string query = $"{supabaseUrl}/rest/v1/userbase?User=eq.{username}&select=email";
+                var response = await client.GetAsync(query);
                 string content = await response.Content.ReadAsStringAsync();
 
-
-                if (response.IsSuccessStatusCode)
+                if (!response.IsSuccessStatusCode)
                 {
-                    if (content == "[]")
-                    {
-                        MessageBox.Show("Invalid Login");
-                    }
+                    MessageBox.Show("Server error. Please try again.");
+                    return;
+                }
 
-                    else
-                    {
-                        MessageBox.Show("REYAL SUGEGES");
-                    }
+                MessageBox.Show($"Query: {query}\n\nResponse: {content}\n{textBox1.Text}\n{textBox3.Text}");
 
+                var users = JsonSerializer.Deserialize<List<Dictionary<string, string>>>(content);
+
+                if (users == null || users.Count == 0)
+                {
+                    MessageBox.Show("Invalid username or password.");
+                    return;
+                }
+
+                string userEmail = users[0]["email"];
+                string otp = GenerateOtp();
+
+                bool sent = await SendOtpEmail(client, userEmail, otp);
+
+                if (sent)
+                {
+                    Otpoo otpForm = new Otpoo(otp, userEmail);
+                    this.Hide();
+                    otpForm.Show();
                 }
                 else
                 {
-                    MessageBox.Show("PEYK");
-
+                    MessageBox.Show("Login verified but failed to send OTP. Please try again.");
                 }
-
             }
         }
+        private string GenerateOtp()
+        {
+            Random rng = new Random();
+            return rng.Next(100000, 999999).ToString();
+        }
+        private async Task<bool> SendOtpEmail(HttpClient client, string toEmail, string otp)
+        {
+            try
+            {
+                var otpRecord = new { email = toEmail, code = otp };
+                var otpJson = JsonSerializer.Serialize(otpRecord);
+                var otpBody = new StringContent(otpJson, System.Text.Encoding.UTF8, "application/json");
+                var otpResponse = await client.PostAsync($"{supabaseUrl}/rest/v1/otp_codes", otpBody);
 
+                if (!otpResponse.IsSuccessStatusCode) return false;
+
+                var message = new MimeKit.MimeMessage();
+                message.From.Add(new MimeKit.MailboxAddress("AAAAA", "jadericmc06@gmail.com"));
+                message.To.Add(new MimeKit.MailboxAddress("", toEmail));
+                message.Subject = "Your OTP Code";
+                message.Body = new MimeKit.TextPart("plain") { Text = $"Your verification code is: {otp}" };
+
+                using var smtp = new MailKit.Net.Smtp.SmtpClient();
+                await smtp.ConnectAsync("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
+                await smtp.AuthenticateAsync("jadericmc06@gmail.com", "ltqi tcaj fdgb xpbn");
+                await smtp.SendAsync(message);
+                await smtp.DisconnectAsync(true);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Email error: {ex.Message}");
+                return false;
+            }
+        }
         private void button2_Click(object sender, EventArgs e)
         {
             Signup sign = new Signup();
