@@ -95,7 +95,7 @@ namespace Final_Project
                     MessageBox.Show("Invalid username or password.");
                     return;
                 }
-
+                MessageBox.Show("Please wait: Establishing connection");
                 string userEmail = users[0]["email"];
                 string otp = GenerateOtp();
 

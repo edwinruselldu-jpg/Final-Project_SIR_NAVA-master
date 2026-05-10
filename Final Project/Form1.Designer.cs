@@ -146,6 +146,8 @@
             // pictureBox3
             // 
             pictureBox3.BackColor = Color.Transparent;
+            pictureBox3.BackgroundImageLayout = ImageLayout.None;
+            pictureBox3.Enabled = false;
             pictureBox3.Image = (Image)resources.GetObject("pictureBox3.Image");
             pictureBox3.Location = new Point(0, -2);
             pictureBox3.Name = "pictureBox3";

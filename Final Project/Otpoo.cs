@@ -69,6 +69,11 @@ namespace Final_Project
                 }
             }
         }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
 }
