@@ -76,7 +76,7 @@ namespace Final_Project
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {supabaseApi}");
                 client.DefaultRequestHeaders.Add("apikey", supabaseApi);
 
-                string query = $"{supabaseUrl}/rest/v1/userbase?User=eq.{username}&select=email";
+                string query = $"{supabaseUrl}/rest/v1/userbase?User=eq.{username}&select=email,Password";
                 var response = await client.GetAsync(query);
                 string content = await response.Content.ReadAsStringAsync();
 
@@ -90,12 +90,28 @@ namespace Final_Project
 
                 if (users == null || users.Count == 0)
                 {
+                    query = $"{supabaseUrl}/rest/v1/userbase?email=eq.{username}&select=email,Password";
+                    response = await client.GetAsync(query);
+                    content = await response.Content.ReadAsStringAsync();
+                    users = JsonSerializer.Deserialize<List<Dictionary<string, string>>>(content);
+                }
+
+                if (users == null || users.Count == 0)
+                {
                     MessageBox.Show("Invalid username or password.");
                     return;
                 }
-                MessageBox.Show("Please wait: Establishing connection");
+
+                string storedHash = users[0]["Password"];
+                if (!BCrypt.Net.BCrypt.Verify(password, storedHash))
+                {
+                    MessageBox.Show("Invalid username or password.");
+                    return;
+                }
+
                 string userEmail = users[0]["email"];
                 string otp = GenerateOtp();
+                MessageBox.Show("Please wait: Establishing connection");
 
                 bool sent = await SendOtpEmail(client, userEmail, otp);
 
@@ -150,7 +166,6 @@ namespace Final_Project
         {
             Signup sign = new Signup();
             sign.Show();
-            this.Close();
         }
 
         private void pictureBox3_Click(object sender, EventArgs e)

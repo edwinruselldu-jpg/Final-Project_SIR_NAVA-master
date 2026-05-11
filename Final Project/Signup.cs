@@ -47,35 +47,45 @@ namespace sign_up
             var confimpass = textBox4.Text;
             if (!string.IsNullOrEmpty(user) && !string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(pass) && !string.IsNullOrEmpty(confimpass))
             {
-                if (pass == confimpass)
-                {
-                    using (HttpClient client = new HttpClient())
+                if (email.Contains("@")) {
+                    if (pass.Length < 8 || !pass.Any(char.IsUpper) || !pass.Any(char.IsDigit) || !pass.Any(c => "!@#$%^&*()_+-=[]{}|;':\",./<>?".Contains(c)))
                     {
-                        client.DefaultRequestHeaders.Clear();
-                        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {supabaseApi}");
-                        client.DefaultRequestHeaders.Add("apikey", supabaseApi);
-                        var obj = new { email = email, User = user, Password = pass };
-                        var json = JsonSerializer.Serialize(obj);
-                        var data = new StringContent(json, Encoding.UTF8, "application/json");
-                        var response = await client.PostAsync($"{supabaseUrl}/rest/v1/userbase", data);
+                        MessageBox.Show("Password must be at least 8 characters, contain an uppercase letter, a number, and a special character");
+                        return;
+                    }
+                    else
+                    {
+                        if (pass == confimpass)
+                        {
+                            using (HttpClient client = new HttpClient())
+                            {
+                                client.DefaultRequestHeaders.Clear();
+                                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {supabaseApi}");
+                                client.DefaultRequestHeaders.Add("apikey", supabaseApi);
+                                var hashedPassword = BCrypt.Net.BCrypt.HashPassword(pass);
+                                var obj = new { email = email, User = user, Password = hashedPassword };
+                                var json = JsonSerializer.Serialize(obj);
+                                var data = new StringContent(json, Encoding.UTF8, "application/json");
+                                var response = await client.PostAsync($"{supabaseUrl}/rest/v1/userbase", data);
 
 
-                        if (response.IsSuccessStatusCode)
-                        {
-                            MessageBox.Show("Successful Registration");
-                            this.Close();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Registration Failed");
+                                if (response.IsSuccessStatusCode)
+                                {
+                                    MessageBox.Show("Successful Registration");
+                                    this.Close();
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Registration Failed");
+                                }
+                            }
                         }
                     }
-                }
-
-                else
-                {
-                    MessageBox.Show("Password and Confirm Password is not the same");
-                }
+            }   
+            else
+            {
+                MessageBox.Show("Password and Confirm Password is not the same");
+            }
             }
             else
             {

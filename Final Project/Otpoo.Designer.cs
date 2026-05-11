@@ -38,11 +38,11 @@
             // 
             label1.AutoSize = true;
             label1.ForeColor = Color.White;
-            label1.Location = new Point(103, 129);
+            label1.Location = new Point(12, 130);
             label1.Name = "label1";
             label1.Size = new Size(180, 30);
             label1.TabIndex = 0;
-            label1.Text = "We have sent a verification code \r\n       to your mobile number";
+            label1.Text = "We have sent a verification code \r\n       to your email";
             label1.Click += label1_Click;
             // 
             // textBox1
